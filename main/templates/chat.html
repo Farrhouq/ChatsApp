@@ -1,0 +1,89 @@
+{% extends 'main.html' %} {% block content %} {% load static %}
+
+<div class="messages-background">
+  <div class="other-profile">
+    <a href="/"><img class="back" src="/../static/images/back.png" alt=""></a>
+    <div style="margin-left: 2rem">
+      <img
+        class="other-user-profile-pic"
+        src="/static{{friend.profile_picture.url}}"
+        alt="/static{{friend.profile_picture.url}}"
+      />
+    </div>
+    <div style="margin-left: 2%; color: aqua">
+      <span style="font-size: 2.5rem; margin-left: 2%; color: white"
+        ><strong>{{friend}}</strong>
+      </span>
+      <p>{{friend.username}}</p>
+    </div>
+  <img class="time-format btn btn-success" src="/../static/images/time-format.png" alt="">
+    <a href="" class="refresh btn btn-dark">&#x21bb;</a>
+  </div>
+  <div class="messages-container">
+    {% for message in messages %} {% if message.user == request.user %}
+    <div style="display: flex; flex-direction: row-reverse">
+      <div class="mine">
+        {{message.body}}
+        <small class="rawtimes" style="font-size:small;color: blueviolet;" ><p>{{message.created}}</p></small>
+        <small class="timesinces" style="font-size:small;color: blueviolet;display: none;" ><p>{{message.created | timesince}} ago</p></small>
+      </div>
+    </div>
+    {% else %}
+    <div class="other">
+      {{message.body}}
+      <small class="rawtimes" style="font-size:small;color: blueviolet;"><p>{{message.created}}</p></small>
+      <small class="timesinces" style="font-size:small;color: blueviolet;display: none;"><p>{{message.created | timesince}} ago</p></small>
+    </div>
+    {% endif %} {% endfor %}
+
+
+    <div class="message-input">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input
+        id="input"
+        type="text"
+        name="message"
+        placeholder="Write new message..."
+      />
+      <input class="send" type="image" src="/../static/images/send.png"></input>
+    </form>
+  </div>
+  </div>
+</div>
+
+<script>
+  var msg_container = document.querySelector(".messages-container");
+  msg_container.scrollTo(0, msg_container.scrollHeight);
+
+  var timesinces = document.querySelectorAll('.timesinces');
+  var rawtimes = document.querySelectorAll('.rawtimes');
+  var time_format = document.querySelector('.time-format');
+
+console.log(rawtimes);
+console.log(timesinces);
+console.log(time_format);
+
+time_format.addEventListener('click', function(){
+  if (timesinces[0].style.display == 'none'){
+    for (timesince of timesinces){
+      timesince.style.display = 'block'
+    }
+    for (rawtime of rawtimes){
+      rawtime.style.display = 'none'
+    }
+  }
+  else{
+    for (timesince of timesinces){
+      timesince.style.display = 'none'
+    }
+    for (rawtime of rawtimes){
+      rawtime.style.display = 'block'
+    }
+  }
+})
+
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+
+
+<div class="container form-container login-inside" style="padding: 2%;margin-top: 10%;">
+    <form action="" method="POST">
+      {% csrf_token %} 
+      {{form | crispy}}
+      <p style="margin-bottom: 1rem;">
+        New to <strong style="color: blue;"><i>ChatsApp?</i></strong><a href="{% url 'users:register' %}">
+          <strong><u>Sign Up</u></strong></a
+        >
+      </p>
+      <input type="submit" value="Submit" class="btn btn-success"/>
+    </form>
+  </div>
+
+
+
+{% endblock content %} 
+
+
+

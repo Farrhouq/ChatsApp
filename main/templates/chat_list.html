@@ -1,0 +1,28 @@
+{% extends 'main.html' %} {% block content %}
+
+<div class="profile">
+  <div><img class="user-profile-pic" src="static{{pic}}" alt="" /></div>
+  <div style="margin-left: 2%;color:aqua">
+    <span style="font-size: 2.5rem; margin-left: 2%; color: white"
+      ><strong>{{request.user}}</strong>
+    </span>
+    <p>{{request.user.username}}</p>
+  </div>
+</div>
+<div class="chat-container">
+  <ol class="list-group list-group-numbered">
+   {% for chat in chats %}
+    <a style="color:black;" href="{% url 'main:chat' chat.id %}"><li
+      class="list-group-item d-flex justify-content-between align-items-start"
+    >
+      <div class="ms-2 me-auto">
+        <div class="fw-bold"><strong>{{chat.other}}</strong></div>
+        Content for list item
+      </div>
+      <span class="badge bg-primary rounded-pill">14</span>
+    </li>
+   </a>
+    {% endfor %}
+  </ol>
+</div>
+{% endblock %}
