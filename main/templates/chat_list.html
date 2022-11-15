@@ -1,5 +1,7 @@
 {% extends 'main.html' %} {% block content %}
 
+<div class="container">
+
 <div class="profile">
   <div><img class="user-profile-pic" src="static{{pic}}" alt="" /></div>
   <div style="margin-left: 2%;color:aqua">
@@ -9,6 +11,7 @@
     <p>{{request.user.username}}</p>
   </div>
 </div>
+<div class="chats-label btn" >{{label}}</div>
 <div class="chat-container">
   <ol class="list-group list-group-numbered">
    {% for chat in chats %}
@@ -17,12 +20,18 @@
     >
       <div class="ms-2 me-auto">
         <div class="fw-bold"><strong>{{chat.other}}</strong></div>
-        Content for list item
+        {% if chat.last_message is not None %}
+        {{chat.last_message}}
+        {% endif %}
       </div>
-      <span class="badge bg-primary rounded-pill">14</span>
+      {% if chat.user_unread_ %}
+      <span class="badge bg-primary rounded-pill" style="font-size: large;color:white">{{chat.user_unread_}}</span>
+      {% endif %}
     </li>
    </a>
     {% endfor %}
   </ol>
+</div>
+
 </div>
 {% endblock %}
