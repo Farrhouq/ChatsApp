@@ -40,6 +40,7 @@ class Chat(models.Model):
     other = None
     user_unread_ = None
     last_message = None
+    is_mine = None
     
     def __str__(self) -> str:
         return f"{self.user} | {self.user1}"

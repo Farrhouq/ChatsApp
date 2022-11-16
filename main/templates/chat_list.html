@@ -1,37 +1,48 @@
 {% extends 'main.html' %} {% block content %}
 
 <div class="container">
-
-<div class="profile">
-  <div><img class="user-profile-pic" src="static{{pic}}" alt="" /></div>
-  <div style="margin-left: 2%;color:aqua">
-    <span style="font-size: 2.5rem; margin-left: 2%; color: white"
-      ><strong>{{request.user}}</strong>
-    </span>
-    <p>{{request.user.username}}</p>
+  <div class="profile">
+    <div><img class="user-profile-pic" src="static{{pic}}" alt="" /></div>
+    <div style="margin-left: 2%; color: aqua">
+      <span style="font-size: 2.5rem; margin-left: 2%; color: white"
+        ><strong>{{request.user}}</strong>
+      </span>
+      <p>{{request.user.username}}</p>
+    </div>
   </div>
-</div>
-<div class="chats-label btn" >{{label}}</div>
-<div class="chat-container">
-  <ol class="list-group list-group-numbered">
-   {% for chat in chats %}
-    <a style="color:black;" href="{% url 'main:chat' chat.id %}"><li
-      class="list-group-item d-flex justify-content-between align-items-start"
-    >
-      <div class="ms-2 me-auto">
-        <div class="fw-bold"><strong>{{chat.other}}</strong></div>
-        {% if chat.last_message is not None %}
-        {{chat.last_message}}
-        {% endif %}
-      </div>
-      {% if chat.user_unread_ %}
-      <span class="badge bg-primary rounded-pill" style="font-size: large;color:white">{{chat.user_unread_}}</span>
-      {% endif %}
-    </li>
-   </a>
-    {% endfor %}
-  </ol>
-</div>
-
+  <a href=""><div class="chats-label btn">{{label}}</div></a>
+  <div class="chat-container">
+    <ol class="list-group list-group-numbered">
+      {% for chat in chats %}
+        <a style="color: black" href="{% url 'main:chat' chat.id %}"
+          ><li
+            class="list-group-item d-flex justify-content-between align-items-start"
+          >
+            <div class="ms-2 me-auto">
+              <div class="fw-bold"><strong>{{chat.other}}</strong></div>
+              {% if chat.last_message is not None %}
+                  {% if chat.last_message.user == request.user %}
+                      {% if chat.last_message.user.email == chat.user and chat.last_message.read1 %}
+                        <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
+                      {% elif chat.last_message.user.email == chat.user1 and chat.last_message.read %}
+                        <small style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
+                      {% else %}
+                        <small style="font-size: 0.6rem;"><strong><em>&#10003;&#10003;</em></strong></small>
+                      {% endif %}
+                  {% endif %} 
+                {{chat.last_message}}
+              {% endif %}
+            </div>
+            {% if chat.user_unread_ %}
+              <span
+                class="badge bg-primary rounded-pill"
+                style="font-size: large; color: white"
+                >{{chat.user_unread_}}</span>
+            {% endif %}
+          </li>
+        </a>
+      {% endfor %}
+    </ol>
+  </div>
 </div>
 {% endblock %}
