@@ -5,9 +5,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>ChatsApp</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
 
     <style>
       body {
@@ -28,7 +29,7 @@
       }
       .chat-container {
         background-color: white;
-        width: 60%;
+        width: 80%;
         height: fit-content;
         margin-top: 0%;
         border: 5px solid aqua;
@@ -87,7 +88,7 @@
         padding: 1%;
         padding-bottom: 0;
         height: fit-content;
-        
+
         font-size: larger;
       }
 
@@ -122,7 +123,7 @@
         flex-direction: column;
       }
 
-      .message-input{
+      .message-input {
         width: 35%;
         margin-left: 65%;
         margin-bottom: 20%;
@@ -130,8 +131,7 @@
         border-radius: 1%;
       }
 
-
-      .message-input input{
+      .message-input input {
         border-radius: 5px;
         height: 2rem;
       }
@@ -168,23 +168,92 @@
         border-radius: 20%;
       }
 
-    .chats-label {
-      color: white;
-      margin-bottom: 0;
-      margin-left: 10%;
-      margin-top: 2%;
-      background-color: blue;
-      font-size: xx-large;
-      border: 2px solid aqua;
+      .chats-label {
+        color: white;
+        margin-bottom: 0;
+        margin-left: 10%;
+        margin-top: 2%;
+        background-color: blue;
+        font-size: xx-large;
+        border: 2px solid aqua;
+      }
+
+      .more {
+        font-size: 2rem;
+        margin-left: 45%;
+        height: 20%;
+        margin-top: 5%;
+        /* background-color: aqua; */
+        border: 2px solid aqua;
+        border-radius: 10%;
+      }
       
+      .btn-more {
+        color: white;
+        border-radius: 3px;
+       
+      }
+
+      .messages {
+        color: red;
+        margin-left: 25%;
+        border: 2px solid aqua;
+        width: fit-content;
+        height: fit-content;
+        padding-right: 1%;
+        margin-top: 1%;
+        border-radius: 5px;
+        background-color: aqua;
+      }
+
+      .rawtimes {
+        font-size:small;
+        color: blueviolet;
+      }
+
+      .timesinces {
+        font-size:small;
+        color: blueviolet;
+        display: none;
+      }
+
+      .delete {
+        width: 100%;
+        height: 100%;
+      }
+
+      .del {
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+       
+      }
+      .rhs {
+        display: flex;
+        flex-direction: row;
+        width: 30%;
+      }
+
+      .del-container {
+        border: 3px solid aqua;
+        margin-top: 20%;
+        margin-left: 20%;
+        width: fit-content;
+        padding: 1rem;
+        background-color: aqua;
+        color: red;
+        font-size: large;
+      }
+
       
-    }
     </style>
   </head>
   <body>
     {% block content %} {% endblock %}
   </body>
 
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/jquery-3.6.1.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
   <script src="{% static 'js/js.js' %}"></script>
 </html>

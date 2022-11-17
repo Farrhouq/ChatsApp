@@ -10,7 +10,7 @@
         alt="/static{{friend.profile_picture.url}}"
       />
     </div>
-    <div style="margin-left: 2%; color: aqua">
+    <div style="margin-left: 2%; color: aqua;width:20%;">
       <span style="font-size: 2.5rem; margin-left: 2%; color: white"
         ><strong>{{friend}}</strong>
       </span>
@@ -24,15 +24,15 @@
     <div style="display: flex; flex-direction: row-reverse">
       <div class="mine">
         {{message.body}}
-        <small class="rawtimes" style="font-size:small;color: blueviolet;" ><p>{{message.created}}</p></small>
+        <small class="rawtimes"><p>{{message.created}}</p></small>
         <small class="timesinces" style="font-size:small;color: blueviolet;display: none;" ><p>{{message.created | timesince}} ago</p></small>
       </div>
     </div>
     {% else %}
     <div class="other">
       {{message.body}}
-      <small class="rawtimes" style="font-size:small;color: blueviolet;"><p>{{message.created}}</p></small>
-      <small class="timesinces" style="font-size:small;color: blueviolet;display: none;"><p>{{message.created | timesince}} ago</p></small>
+      <small class="rawtimes"><p>{{message.created}}</p></small>
+      <small class="timesinces"><p>{{message.created | timesince}} ago</p></small>
     </div>
     {% endif %} {% endfor %}
 

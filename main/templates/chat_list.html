@@ -3,46 +3,95 @@
 <div class="container">
   <div class="profile">
     <div><img class="user-profile-pic" src="static{{pic}}" alt="" /></div>
-    <div style="margin-left: 2%; color: aqua">
+    <div style="margin-left: 2%; color: aqua;width: 30%;">
       <span style="font-size: 2.5rem; margin-left: 2%; color: white"
         ><strong>{{request.user}}</strong>
       </span>
       <p>{{request.user.username}}</p>
     </div>
+    
+<div class="btn-group more">
+    <div class="btn-group">
+      <button class="btn btn-more btn-sm" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+        <strong>. . .</strong>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          
+          <div class="dropdown dropend">
+            <button style="width: 100%;" type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              Add new chat &rarr;
+            </button>
+            <form class="dropdown-menu p-4" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" class="form-control" name="username" id="username" placeholder="">
+              </div>
+              <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+          </div>
+
+      </li>
+        <li><a class="dropdown-item" href="#">My Profile</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+ 
+</div>
   </div>
+
+  {% if messages %}
+    <ul class="messages ">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
   <a href=""><div class="chats-label btn">{{label}}</div></a>
   <div class="chat-container">
     <ol class="list-group list-group-numbered">
       {% for chat in chats %}
+      <div>
         <a style="color: black" href="{% url 'main:chat' chat.id %}"
           ><li
             class="list-group-item d-flex justify-content-between align-items-start"
-          >
+            >
             <div class="ms-2 me-auto">
               <div class="fw-bold"><strong>{{chat.other}}</strong></div>
               {% if chat.last_message is not None %}
-                  {% if chat.last_message.user == request.user %}
-                      {% if chat.last_message.user.email == chat.user and chat.last_message.read1 %}
-                        <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
-                      {% elif chat.last_message.user.email == chat.user1 and chat.last_message.read %}
-                        <small style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
+              {% if chat.last_message.user == request.user %}
+              {% if chat.last_message.user.email == chat.user and chat.last_message.read1 %}
+              <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
+              {% elif chat.last_message.user.email == chat.user1 and chat.last_message.read %}
+              <small style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
                       {% else %}
                         <small style="font-size: 0.6rem;"><strong><em>&#10003;&#10003;</em></strong></small>
                       {% endif %}
                   {% endif %} 
                 {{chat.last_message}}
+                {% endif %}
+              </div>
+              <div class="rhs">
+            <div style="display: flex;flex-direction:column;width: 13rem;margin: 0;">
+              {% if chat.user_unread_ %}
+              <span
+              class="badge bg-primary rounded-pill"
+              style="font-size: large; color: white;width:fit-content;margin: auto;"
+              >{{chat.user_unread_}}</span>
+              {% endif %}
+              {% if chat.last_message is not None %}
+              <span class="badge now-factor">{{chat.last_message.created|timesince}} ago</span>
               {% endif %}
             </div>
-            {% if chat.user_unread_ %}
-              <span
-                class="badge bg-primary rounded-pill"
-                style="font-size: large; color: white"
-                >{{chat.user_unread_}}</span>
-            {% endif %}
+            <div class="del-div"><a href="{% url 'main:delete_chat' chat.id %}" class="btn del"><img class="delete" src="/../static/images/delete.png" alt=""></a></div>
+          </div>
           </li>
         </a>
-      {% endfor %}
-    </ol>
+      </div>
+        {% endfor %}
+      </ol>
+    </div>
   </div>
-</div>
 {% endblock %}
