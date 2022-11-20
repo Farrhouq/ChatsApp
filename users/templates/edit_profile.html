@@ -3,8 +3,7 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
-<div class="container"
-    style="width: 50%;margin-top: 5%;border: 5px solid aqua;padding: 3%;border-radius: 20px;background-color: hsla(240, 100%, 10%, 0.7);">
+<div class="container edit-profile-container">
 
     {% if messages %}
     <ul class="messages">
@@ -16,7 +15,13 @@
     <form action="" method="POST" style="color: white;" enctype='multipart/form-data'>
         {% csrf_token %}
 
-        {{form|crispy}}
+        {% for field in form %}
+        <div class="form-label-group">
+            {{field}}
+            <label>{{field.label}}</label>
+        </div>
+       
+        {% endfor %}
         
         <div class="image-container">
             <label for="file_photo"><pre style="color: white;">Change Profile Picture:    </pre></label>

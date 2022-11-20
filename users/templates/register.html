@@ -1,7 +1,8 @@
 {% extends 'main.html' %} {% load crispy_forms_tags %} {% block content %}
 
 <div class="img-body-login" style="height: 100%">
-  <div class="container form-container register-inside">
+  <div class="container form-container register-inside" style="margin-left: 70%;padding:1rem">
+  <h1 style="margin-left: 35%;">Register</h1>
     <form action="" method="POST">
       {% csrf_token %} {{form | crispy}}
       <div class="image-container">
@@ -17,7 +18,7 @@
       <p style="margin-bottom: 1rem">
         Created an account before?<a href="{% url 'users:login' %}"> Sign In</a>
       </p>
-      <input type="submit" value="Submit" class="btn btn-success" />
+      <input type="submit" value="Register" class="btn btn-success" />
     </form>
   </div>
 </div>

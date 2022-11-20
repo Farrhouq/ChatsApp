@@ -3,7 +3,8 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
-<div class="container form-container login-inside" style="padding: 2%;margin-top: 10%;">
+<div class="container form-container login-inside" style="padding: 2%;margin: auto;background-color: red;">
+  <h1 style="margin-left: 35%;margin-bottom: 5%;">Sign In</h1>
   {% if messages %}
   <ul class="messages" style="border: 1px solid black;">
     {% for message in messages %}
@@ -13,13 +14,19 @@
   {% endif %}
   <form action="" method="POST">
     {% csrf_token %}
-    {{form | crispy}}
+    {% for field in form %}
+        <div class="form-label-group">
+            {{field}}
+            <label>{{field.label}}</label>
+        </div>
+       
+        {% endfor %}
     <p style="margin-bottom: 1rem;">
       New to <strong style="color: blue;"><i>ChatsApp?</i></strong><a href="{% url 'users:register' %}">
         <strong><u>Sign Up</u></strong></a>
     </p>
-    <input type="submit" value="Submit" class="btn btn-success" />
-    <p style="margin-top: 1rem;font-size:medium;"><a href="{% url 'users:password-reset' %}"><strong>I have forgotten my password.</strong></a></p>
+    <input type="submit" value="Login" class="btn btn-success" />
+    <p style="margin-top: 1rem;font-size:medium;"><a style="color: rgb(15, 32, 189);text-decoration: underline;" href="{% url 'users:password-reset' %}"><strong>I have forgotten my password</strong></a></p>
   </form>
 </div>
 
