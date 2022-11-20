@@ -5,13 +5,15 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 class User(AbstractUser):
-    email = models.CharField(max_length=200,
+    email = models.CharField(unique=True,
+                             max_length=200,
                              null=True,
                              verbose_name='username')
     username = models.EmailField(unique=True,
                                  max_length=200,
                                  verbose_name='email address')
-    profile_picture = models.ImageField(default='avatar.svg',
+    profile_picture = models.ImageField(default='images/avatar.svg',
+                                        upload_to='images/',
                                         null=True,
                                         blank=True)
 
@@ -65,8 +67,6 @@ class Chat(models.Model):
 
     other = None
     user_unread_ = None
-    last_message = None
-    is_mine = None
 
     def __str__(self) -> str:
         return f"{self.user} | {self.user1}"

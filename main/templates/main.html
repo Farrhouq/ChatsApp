@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
-
     <style>
       body {
-        background-image: url("/../images/login.jfif");
+        background-image: url("../static/images/login.jfif");
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -27,6 +26,7 @@
         flex-direction: row;
         border-radius: 5px;
       }
+
       .chat-container {
         background-color: white;
         width: 80%;
@@ -43,6 +43,7 @@
         border-radius: 50%;
         border: 2px solid aqua;
         margin-left: 2%;
+        object-fit: cover;
       }
 
       .other-user-profile-pic {
@@ -116,6 +117,7 @@
         padding-bottom: 0%;
         padding-top: -10%;
       }
+
       .messages-container {
         overflow-y: scroll;
         height: 75%;
@@ -183,15 +185,13 @@
         margin-left: 45%;
         height: 20%;
         margin-top: 5%;
-        /* background-color: aqua; */
         border: 2px solid aqua;
         border-radius: 10%;
       }
-      
+
       .btn-more {
         color: white;
         border-radius: 3px;
-       
       }
 
       .messages {
@@ -207,12 +207,12 @@
       }
 
       .rawtimes {
-        font-size:small;
+        font-size: small;
         color: blueviolet;
       }
 
       .timesinces {
-        font-size:small;
+        font-size: small;
         color: blueviolet;
         display: none;
       }
@@ -226,8 +226,8 @@
         width: 2rem;
         height: 2rem;
         padding: 0;
-       
       }
+
       .rhs {
         display: flex;
         flex-direction: row;
@@ -245,9 +245,74 @@
         font-size: large;
       }
 
-      
+      .edit-profile {
+        border-radius: 20px;
+        height: fit-content;
+        border: 5px double aqua;
+        color: white;
+        margin-top: 0%;
+        font-size: larger;
+        background-color: blue;
+      }
+
+      #user-profile-pic {
+        width: 15rem;
+        height: 15rem;
+        border-width: 5px;
+      }
+
+      .user-info {
+        width: 100%;
+        border: 5px double aqua;
+        margin-top: 5%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 2rem;
+        border-radius: 15px;
+      }
+
+      .info {
+        font-size: larger;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        flex-direction: column;
+        color: white;
+        margin-top: 1%;
+      }
+
+      .profile-container {
+        background-color: hsla(240, 100%, 10%, 0.7);
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .light-blue-hover:hover {
+        color: lightblue;
+      }
+
+      .no-hover:hover {
+        text-decoration: none;
+      }
+
+      .camera_icon {
+        background-size: cover;
+        background-position: center;
+        width: 15rem;
+        height: 10rem;
+        border: 2px solid aqua;
+        border-radius: 5px;
+      }
+
+      .image-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
     </style>
   </head>
+
   <body>
     {% block content %} {% endblock %}
   </body>

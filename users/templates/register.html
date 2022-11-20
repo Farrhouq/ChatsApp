@@ -1,23 +1,40 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} {% load crispy_forms_tags %} {% block content %}
 
-{% load crispy_forms_tags %}
-
-{% block content %}
-
-<div class="img-body-login" style="height: 100%;">
-
-<div class=" container form-container register-inside">
+<div class="img-body-login" style="height: 100%">
+  <div class="container form-container register-inside">
     <form action="" method="POST">
-      {% csrf_token %} 
-      {{form | crispy}}
-      <p style="margin-bottom: 1rem;">
-        Created an account before?<a href="{% url 'users:login' %}">
-          Sign In</a
-        >
+      {% csrf_token %} {{form | crispy}}
+      <div class="image-container">
+        <label for="file_photo"><pre>Choose Profile Picture:  </pre></label>
+        <input
+          type="file"
+          id="file_photo"
+          onchange="preview_image(event)"
+          name="profile_picture"
+        />
+        <div id="camera_icon" class="camera_icon"></div>
+      </div>
+      <p style="margin-bottom: 1rem">
+        Created an account before?<a href="{% url 'users:login' %}"> Sign In</a>
       </p>
-      <input type="submit" value="Submit" class="btn btn-success"/>
+      <input type="submit" value="Submit" class="btn btn-success" />
     </form>
   </div>
-
 </div>
+
+<script>
+  camera_icon = document.getElementById("camera_icon");
+  document.onload((camera_icon.style.display = "none"));
+
+  function preview_image(event) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var output = document.getElementById("camera_icon");
+      output.style.display = "block";
+      output.style.backgroundImage = "url('" + reader.result + "')";
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
+
 {% endblock %}

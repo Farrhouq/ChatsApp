@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatsApp</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Reset</title>
+
+    <style>
+      .form-container-two {
+        margin-top: 5%;
+        width: 50%;
+      }
+    </style>
+  </head>
+
+  <body
+    style="
+      background-image: url('/../static/images/password_change.jpg');
+      background-size: cover;
+    "
+  >
+    {% block content %} {% endblock %}
+  </body>
+</html>

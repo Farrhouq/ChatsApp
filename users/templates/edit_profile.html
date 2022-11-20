@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container"
+    style="width: 50%;margin-top: 5%;border: 5px solid aqua;padding: 3%;border-radius: 20px;background-color: hsla(240, 100%, 10%, 0.7);">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    <form action="" method="POST" style="color: white;" enctype='multipart/form-data'>
+        {% csrf_token %}
+
+        {{form|crispy}}
+        
+        <div class="image-container">
+            <label for="file_photo"><pre style="color: white;">Change Profile Picture:    </pre></label>
+            <input type="file" id="file_photo" onchange="preview_image(event)" name="profile_picture" />
+            <div id="camera_icon" class="camera_icon"></div>
+        </div>
+        <input type="submit" class="btn btn-success" value="Update" name="" id="">
+        <a class="btn btn-danger" style="margin-left: 5%;" href="{{request.META.HTTP_REFERER}}">Back</a>
+
+    </form>
+</div>
+
+<script>
+    camera_icon = document.getElementById('camera_icon')
+    document.onload(
+        camera_icon.style.display = 'none'
+    )
+    function preview_image(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('camera_icon');
+            output.style.display = 'block'
+            output.style.backgroundImage = "url('" + reader.result + "')";
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+
+{% endblock %}

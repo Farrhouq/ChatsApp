@@ -13,19 +13,27 @@ def chat_list(request):
         username = request.POST.get('username')
         if username:
             if username == request.user.email:
-                messages.error(request, "Can't create a chat with your username")
-            elif not User.objects.filter(email=request.user.email).exists() or not User.objects.filter(email=username).exists():
-                messages.error(request, 'This user is not registered on ChatsApp')
+                messages.error(request,
+                               "Can't create a chat with your username")
+            elif not User.objects.filter(email=request.user.email).exists(
+            ) or not User.objects.filter(email=username).exists():
+                messages.error(request,
+                               'This user is not registered on ChatsApp')
             else:
                 try:
-                    Chat.objects.create(user=request.user.email, user1=username)
-                    messages.success(request, f'The chat "{username}" was added successfully')
+                    Chat.objects.create(user=request.user.email,
+                                        user1=username)
+                    messages.success(
+                        request,
+                        f'The chat "{username}" was added successfully!')
                 except ValidationError:
                     messages.error(request, 'This chat already exists')
-        
 
     all_chats = Chat.objects.all()
-    chats = [chat for chat in all_chats if request.user.email in [chat.user, chat.user1]]
+    chats = [
+        chat for chat in all_chats
+        if request.user.email in [chat.user, chat.user1]
+    ]
 
     try:
         pic = request.user.profile_picture.url
@@ -34,7 +42,6 @@ def chat_list(request):
 
     for chat in chats:
         chat.other = chat.get_other(request)
-        chat.last_message = chat.get_last_message()
 
     unread_chats_count = 0
     for chat in chats:
@@ -51,7 +58,6 @@ def chat_list(request):
         label = f'Chats ({unread_chats_count})'
     else:
         label = 'Chats'
-
 
     context = {'chats': chats, 'pic': pic, 'label': label}
     return render(request, 'chat_list.html', context)
@@ -82,13 +88,17 @@ def chat(request, pk):
 def delete_chat(request, pk):
     chat = Chat.objects.get(id=pk)
     message_count = chat.messages.count()
-    message = 'one message'
+    message = ' and one message'
+    chat_name = chat.get_other(request)
 
-    if message_count>1:
-        message = f'all its {message_count} messages'
+    if message_count > 1:
+        message = f' and all its {message_count} messages'
+    elif not message_count:
+        message = ''
 
     if request.method == 'POST':
         chat.delete()
+        messages.success(request,
+                         f'The chat "{chat_name}" was deleted successfully!')
         return redirect('main:chat_list')
-    
-    return render(request, 'delete.html', {'message':message})
+    return render(request, 'delete.html', {'message': message})

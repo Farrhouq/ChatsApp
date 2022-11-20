@@ -121,8 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL = 'images/'
-MEDIA_ROOT = BASE_DIR / 'users/static/images'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 
 # Default primary key field type
@@ -130,3 +131,7 @@ MEDIA_ROOT = BASE_DIR / 'users/static/images'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#To be used in production
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
