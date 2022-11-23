@@ -66,6 +66,7 @@ class Chat(models.Model):
         return self.messages.all().last()
 
     other = None
+    other_pic = None
     user_unread_ = None
 
     def __str__(self) -> str:
@@ -94,4 +95,4 @@ class Message(models.Model):
         if len(self.body) <= 50:
             return self.body
         elif len(self.body) > 50:
-            return f"{self.body[:50]}..."
+            return f"{self.body[:20]}..."

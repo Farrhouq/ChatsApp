@@ -1,21 +1,13 @@
 {% extends 'main.html' %} {% block content %}
 
 <div class="profile-container">
-  <div
-    class="container"
-    style="
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 50%;
-    "
-  >
+  <div class="container pc-2">
     <div>
       <img
         class="user-profile-pic"
         id="user-profile-pic"
         src="{{pic}}"
-        alt="{pic}}"
+        alt="{{pic}}"
       />
     </div>
     <div class="info">
@@ -27,7 +19,7 @@
       class="btn edit-profile light-blue-hover"
       >EDIT PROFILE</a
     >
-    <div class="user-info container">
+    <div class="user-info">
       <p style="color: white">Number of chats: {{chat_number}}</p>
       <p style="color: white">
         Total messages: {{request.user.message_set.all.count}}

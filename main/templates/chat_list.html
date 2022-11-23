@@ -1,45 +1,91 @@
-{% extends 'main.html' %} {% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatsApp</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
 
-<div class="container">
-  <div class="profile">
-    <div><img class="user-profile-pic" src="{{pic}}" alt="{{pic}}" /></div>
-    <div style="margin-left: 2%; color: aqua;width: 30%;">
-      <span style="font-size: 2.5rem; margin-left: 2%; color: white"><strong>{{request.user}}</strong>
-      </span>
-      <p>{{request.user.username}}</p>
+<body>
+<div style="
+width:100vw;
+height:100vh;
+background-image: url('../static/images/login.jfif');
+background-size: cover;
+overflow-y: scroll;
+">
+
+<div class="container-lg box" style="margin-top: 5%;margin-bottom:10%">
+  <div
+    class="row" 
+    style="
+      border: 2px solid rgb(47, 0, 255);
+      border-radius: 20px;
+      background-color: red;
+      margin-bottom: 2vh;
+      min-width: fit-content;
+      
+    "
+  >
+    <div
+      class="col-xs-12 col-sm-2"
+      style="display: flex; align-items: center; justify-content: center"
+    >
+      <img class="user-profile-pic" src="{{pic}}" alt="" />
     </div>
+    <div class="col-xs-12 col-sm-10">
+      <div class="row">
+        <div class="col-9 col-xl-10 col-md-9">
+          <div>
+            <h1 style="color: white">{{request.user}}</h1>
+            <p style="color: white">{{request.user.username}}</p>
+          </div>
+        </div>
 
-    <div class="btn-group more">
-      <div class="btn-group">
-        <button class="btn btn-more btn-sm light-blue-hover" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
-          aria-expanded="false">
-          <strong>. . .</strong>
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-
-            <div class="dropdown dropend">
-              <button style="width: 100%;" type="button" class="btn btn-primary" data-bs-toggle="dropdown"
-                aria-expanded="false" data-bs-auto-close="outside">
-                Add new chat &rarr;
-              </button>
-              <form class="dropdown-menu p-4" method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <label for="username" class="form-label">Username:</label>
-                  <input type="text" class="form-control" name="username" id="username" placeholder="">
+        <div
+          class="col-3 col-xl-2 col-md-3"
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <div class="row">
+            <div class="col-12" style="border: 2px solid aqua;border-radius: 10px;">
+                <div class="btn-group">
+                  <div class="btn btn-more btn-sm light-blue-hover" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                    aria-expanded="false">
+                    <strong>. . .</strong>
                 </div>
-                <button type="submit" class="btn btn-primary">Add</button>
-              </form>
-            </div>
-
-          </li>
-          <li><a class="dropdown-item" href="{% url 'users:user_profile' %}">My Profile</a></li>
-          <li><a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a></li>
-          <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
-        </ul>
+                  <ul class="dropdown-menu">
+                    <li>
+          
+                      <div class="dropdown dropstart ">
+                        <button style="width: 100%;" type="button" class="btn btn-primary" data-bs-toggle="dropdown"
+                          aria-expanded="false" data-bs-auto-close="outside">
+                          &ShortLeftArrow; Add new chat
+                        </button>
+                        <form class="dropdown-menu p-4"style="width: 10%;" method="POST">
+                          {% csrf_token %}
+                          <div class="mb-3" >
+                            <label for="username" class="form-label">Username:</label>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="">
+                          </div>
+                          <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                      </div>
+          
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'users:user_profile' %}">My Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'users:change_password' %}">Change Password</a></li>
+                    <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
+                  </ul>
+                </div>
+          
+              </div>
+          </div>
+        </div>
       </div>
-
     </div>
   </div>
 
@@ -50,50 +96,75 @@
       {% endfor %}
   </ul>
   {% endif %}
-
-  <a href="">
-    <div class="chats-label btn">{{label}}</div>
-  </a>
-  <div class="chat-container">
-    <ol class="list-group list-group-numbered">
-      {% for chat in chats %}
-      <div>
-        <a style="color: black" href="{% url 'main:chat' chat.id %}">
-          <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-              <div class="fw-bold"><strong>{{chat.other}}</strong></div>
-              {% if chat.get_last_message is not None %}
-              {% if chat.get_last_message.user == request.user %}
-              {% if chat.get_last_message.user.email == chat.user and chat.get_last_message.read1 %}
-              <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
-              {% elif chat.last_message.user.email == chat.user1 and chat.last_message.read %}
-              <small
-                style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
-              {% else %}
-              <small style="font-size: 0.6rem;"><strong><em>&#10003;&#10003;</em></strong></small>
-              {% endif %}
-              {% endif %}
-              {{chat.get_last_message}}
-              {% endif %}
-            </div>
-            <div class="rhs">
-              <div style="display: flex;flex-direction:column;width: 13rem;margin: 0;">
-                {% if chat.user_unread_ %}
-                <span class="badge bg-primary rounded-pill"
-                  style="font-size: large; color: white;width:fit-content;margin: auto;">{{chat.user_unread_}}</span>
-                {% endif %}
-                {% if chat.get_last_message is not None %}
-                <span class="badge now-factor">{{chat.get_last_message.created|timesince}} ago</span>
-                {% endif %}
-              </div>
-              <div class="del-div"><a href="{% url 'main:delete_chat' chat.id %}" class="btn del"><img class="delete"
-                    src="/../static/images/delete.png" alt=""></a></div>
-            </div>
-          </li>
-        </a>
-      </div>
-      {% endfor %}
-    </ol>
-  </div>
+  
+ 
+<div class="">
+ <div  class="row">
+    <a href="" class="btn chats-label col-12 col-sm-3" style="background-color: blue; ">
+      {{label}}
+    </a>
 </div>
-{% endblock %}
+
+<div class="row" >
+     {% for chat in chats %}
+      <div class="col-12">
+        <div class="row chat-row">
+          <a href="{% url 'main:chat' chat.id %}" class="col-6 col-md-8" style="background-color: white; padding: 2%;">
+
+
+            <div style="display: flex;flex-direction: row;">
+                <img style="height: 50px;width:50px" class="user-profile-pic" src="{{chat.other_pic}}" alt="{{chat.other_pic}}">
+                <div style="margin-left:2%;overflow-x:auto;">
+            <div class="fw-bold"><strong>{{chat.other}}</strong></div>
+            {% if chat.get_last_message is not None %}
+            {% if chat.get_last_message.user == request.user %}
+            {% if chat.get_last_message.user.email == chat.user and chat.get_last_message.read1 %}
+            <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
+            {% elif chat.last_message.user.email == chat.user1 and chat.last_message.read %}
+            <small
+              style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
+            {% else %}
+            <small style="font-size: 0.6rem;"><strong><em>&#10003;&#10003;</em></strong></small>
+            {% endif %}
+            {% endif %}
+            {{chat.get_last_message}}
+            {% endif %}
+        </div>
+        </div>
+          </a>
+          
+
+
+          <div class=" col-6 col-md-4" style="background-color:white">
+            <div class="row" style="padding: 0;">
+             <a href="{% url 'main:chat' chat.id %}" class="col-8" style="display: flex;flex-direction:column;margin: 0;align-items: center;margin-top: 5%;">
+              {% if chat.user_unread_ %}
+              <span class="badge bg-primary rounded-pill"
+                style="font-size: large; color: white;width:fit-content;margin: auto;">{{chat.user_unread_}}</span>
+              {% endif %}
+              {% if chat.get_last_message is not None %}
+              <span class="badge now-factor">{{chat.get_last_message.created|timesince}} ago</span>
+              {% endif %}
+            </a>
+            <div class="col-4" style="padding:0;">
+                <a href="{% url 'main:delete_chat' chat.id %}">
+                    <img style="margin-top: 20%;" src="{% static 'images/delete.png' %}"  alt="Delete icon">
+                </a>
+            </div>
+        </div>
+    </div>      
+</div>
+        </div>
+      {% endfor %}
+    </div>
+</div>
+
+</div>
+</div>
+</body>
+</html>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/jquery-3.6.1.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/js.js' %}"></script>

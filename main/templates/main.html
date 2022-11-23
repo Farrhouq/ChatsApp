@@ -8,13 +8,13 @@
     <title>ChatsApp</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/floating-labels.css' %}" />
 
     <style>
       body {
         background-image: url("../static/images/login.jfif");
         background-repeat: no-repeat;
         background-size: cover;
+        
       }
 
       .profile {
@@ -28,15 +28,6 @@
         border-radius: 5px;
       }
 
-      .chat-container {
-        background-color: white;
-        width: 80%;
-        height: fit-content;
-        margin-top: 0%;
-        border: 5px solid aqua;
-        border-radius: 10px;
-        margin-left: 10%;
-      }
 
       .user-profile-pic {
         width: 100px;
@@ -174,8 +165,8 @@
       .chats-label {
         color: white;
         margin-bottom: 0;
-        margin-left: 10%;
         margin-top: 2%;
+        
         background-color: blue;
         font-size: xx-large;
         border: 2px solid aqua;
@@ -313,7 +304,7 @@
       }
       .edit-profile-container {
         width: 50%;
-        margin-top: -10%;
+        margin-top: 5%;
         border: 5px solid aqua;
         padding: 3%;
         border-radius: 20px;
@@ -322,12 +313,27 @@
       adjust {
         margin-top: -10% !important;
       }
+
+      .pc-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+        margin-top: 0;
+      }
+
+      .chat-row {
+        height: fit-content;
+        border: 2px solid aqua;
+        border-radius: 5px;
+      }
+      
     </style>
   </head>
 
   <body>
     {% block content %} {% endblock %}
-  </body>
+ </body>
 
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/jquery-3.6.1.js' %}"></script>

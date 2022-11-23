@@ -1,7 +1,8 @@
 {% extends 'main.html' %}
-
+{% load static %}
 {% block content %}
 {% load crispy_forms_tags %}
+<link rel="stylesheet" href="{% static 'css/floating-labels.css' %}" />
 
 <div class="container form-container login-inside" style="padding: 2%;margin: auto;background-color: red;">
   <h1 style="margin-left: 35%;margin-bottom: 5%;">Sign In</h1>

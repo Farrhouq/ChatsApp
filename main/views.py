@@ -40,11 +40,12 @@ def chat_list(request):
     except:
         pic = '../static/images/avatar.svg'
 
-    for chat in chats:
-        chat.other = chat.get_other(request)
+   
+        
 
     unread_chats_count = 0
     for chat in chats:
+        chat.other = chat.get_other(request)
         if chat.user1 == request.user.email:
             chat.user_unread_ = chat.user1_unread()
         else:
@@ -53,6 +54,10 @@ def chat_list(request):
 
         if chat.user_unread_:
             unread_chats_count += 1
+        try:
+            chat.other_pic = User.objects.get(email=chat.other).profile_picture.url
+        except:
+            chat.other_pic = 'media/images/avatar.svg'
 
     if unread_chats_count:
         label = f'Chats ({unread_chats_count})'
