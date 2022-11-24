@@ -40,9 +40,6 @@ def chat_list(request):
     except:
         pic = '../static/images/avatar.svg'
 
-   
-        
-
     unread_chats_count = 0
     for chat in chats:
         chat.other = chat.get_other(request)
@@ -55,7 +52,8 @@ def chat_list(request):
         if chat.user_unread_:
             unread_chats_count += 1
         try:
-            chat.other_pic = User.objects.get(email=chat.other).profile_picture.url
+            chat.other_pic = User.objects.get(
+                email=chat.other).profile_picture.url
         except:
             chat.other_pic = 'media/images/avatar.svg'
 
@@ -82,11 +80,24 @@ def chat(request, pk):
             Message.objects.create(body=message, chat=chat, user=user)
 
     messages = chat.messages.all()
+    message_list = []
     for message in messages:
         user.read_message(message)
+        message_list.append(message)
+
+    for message in message_list:
+        if message_list.index(message) + 1 != len(
+                message_list) and message_list[message_list.index(message) +
+                                               1].user == message.user:
+            message.message_margin = '0px'
+        pass
 
     friend = User.objects.get(email=friend)
-    context = {'friend': friend, 'messages': messages}
+
+    context = {
+        'friend': friend,
+        'messages': messages,
+    }
     return render(request, 'chat.html', context)
 
 

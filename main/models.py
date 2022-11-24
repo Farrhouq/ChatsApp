@@ -85,6 +85,8 @@ class Message(models.Model):
     read = models.BooleanField(null=True, default=False)
     read1 = models.BooleanField(null=True, default=False)
 
+    message_margin = '20px'
+
     def get_user(self):
         return self.chat.user
 
