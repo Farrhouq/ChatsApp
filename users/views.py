@@ -54,7 +54,7 @@ def register(request):
     page = "register"
     form = UserCreateForm()
     if request.method == "POST":
-        form = UserCreateForm(request.POST)
+        form = UserCreateForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
@@ -76,7 +76,7 @@ def user_profile(request):
     ]
 
     try:
-        pic = request.user.profile_picture.url
+        pic = user.profile_picture.url
     except:
         pic = '../static/images/avatar.svg'
 
@@ -89,8 +89,6 @@ def user_profile(request):
 
 def edit_profile(request):
     user = request.user
-    profile_picture = None
-
     all_chats = Chat.objects.all()
     chats_one = [chat for chat in all_chats if request.user.email == chat.user]
     chats_two = [
@@ -98,29 +96,22 @@ def edit_profile(request):
     ]
 
     form = UserEditForm(instance=user)
-    context = {'form': form}
     if request.method == 'POST':
         email = request.POST.get('email')
-        profile_picture = request.FILES.get('profile_picture')
-        try:
-            user.email = email
-            user.profile_picture = profile_picture
-            user.username = request.POST.get('username')
-            user.save()
-
+        form = UserEditForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            if request.FILES.get('profile_picture'):
+                user.profile_picture = request.FILES.get('profile_picture')
+            user = form.save()
             for chat in chats_one:
                 chat.user = email
                 chat.save()
-
             for chat in chats_two:
                 chat.user1 = email
                 chat.save()
-
-            messages.success(request, 'Profile updated successfully!')
             return redirect('main:chat_list')
-        except:
-            messages.error(request, 'An error occured!')
 
+    context = {'form': form}
     return render(request, 'edit_profile.html', context)
 
 
