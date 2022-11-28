@@ -12,16 +12,16 @@ def chat_list(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         if username:
-            if username == request.user.email:
+            if username == request.user.username:
                 messages.error(request,
                                "Can't create a chat with your username")
-            elif not User.objects.filter(email=request.user.email).exists(
-            ) or not User.objects.filter(email=username).exists():
+            elif not User.objects.filter(username=request.user.username).exists(
+            ) or not User.objects.filter(username=username).exists():
                 messages.error(request,
                                'This user is not registered on ChatsApp')
             else:
                 try:
-                    Chat.objects.create(user=request.user.email,
+                    Chat.objects.create(user=request.user.username,
                                         user1=username)
                     messages.success(
                         request,
@@ -32,7 +32,7 @@ def chat_list(request):
     all_chats = Chat.objects.all()
     chats = [
         chat for chat in all_chats
-        if request.user.email in [chat.user, chat.user1]
+        if request.user.username in [chat.user, chat.user1]
     ]
 
     try:
@@ -43,7 +43,7 @@ def chat_list(request):
     unread_chats_count = 0
     for chat in chats:
         chat.other = chat.get_other(request)
-        if chat.user1 == request.user.email:
+        if chat.user1 == request.user.username:
             chat.user_unread_ = chat.user1_unread()
         else:
             chat.user_unread_ = chat.user_unread()
@@ -51,11 +51,10 @@ def chat_list(request):
 
         if chat.user_unread_:
             unread_chats_count += 1
-        try:
-            chat.other_pic = User.objects.get(
-                email=chat.other).profile_picture.url
-        except:
-            chat.other_pic = 'media/images/avatar.svg'
+        
+        chat.other_pic = User.objects.get(username=chat.other).profile_picture.url
+        
+        
 
     if unread_chats_count:
         label = f'Chats ({unread_chats_count})'
@@ -71,7 +70,7 @@ def chat(request, pk):
     chat = Chat.objects.get(id=pk)
 
     friend = chat.user1
-    if request.user.email == chat.user1:
+    if request.user.username == chat.user1:
         friend = chat.user
 
     if request.method == 'POST':
@@ -92,7 +91,7 @@ def chat(request, pk):
             message.message_margin = '0px'
         pass
 
-    friend = User.objects.get(email=friend)
+    friend = User.objects.get(username=friend)
 
     context = {
         'friend': friend,

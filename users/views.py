@@ -34,7 +34,7 @@ def loginUser(request):
         in_user = authenticate(username=email, password=password)
 
         if in_user is not None:
-            login(request, user)
+            login(request, in_user)
             return redirect('main:chat_list')
         else:
             if user is None:
@@ -57,6 +57,7 @@ def register(request):
         form = UserCreateForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
+            user.profile_picture = request.FILES.get('profile_picture')
             user.save()
             login(request, user)
             return redirect("main:chat_list")

@@ -40,8 +40,8 @@ overflow-y: scroll;
       <div class="row">
         <div class="col-9 col-xl-10 col-md-9">
           <div>
-            <h1 style="color: white">{{request.user}}</h1>
-            <p style="color: white">{{request.user.username}}</p>
+            <h1 style="color: white">{{request.user.username}}</h1>
+            <p style="color: white">{{request.user.email}}</p>
           </div>
         </div>
 
@@ -108,7 +108,7 @@ overflow-y: scroll;
      {% for chat in chats %}
       <div class="col-12">
         <div class="row chat-row">
-          <a href="{% url 'main:chat' chat.id %}" class="col-6 col-md-8" style="background-color: white; padding: 2%;">
+          <a href="{% url 'main:chat' chat.id %}" class="col-6 col-md-8" style="background-color: white; padding: 2%;color:black">
 
 
             <div style="display: flex;flex-direction: row;">
@@ -117,9 +117,9 @@ overflow-y: scroll;
             <div class="fw-bold"><strong>{{chat.other}}</strong></div>
             {% if chat.get_last_message is not None %}
             {% if chat.get_last_message.user == request.user %}
-            {% if chat.get_last_message.user.email == chat.user and chat.get_last_message.read1 %}
+            {% if chat.get_last_message.user.username == chat.user and chat.get_last_message.read1 %}
             <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
-            {% elif chat.last_message.user.email == chat.user1 and chat.last_message.read %}
+            {% elif chat.last_message.user.username == chat.user1 and chat.last_message.read %}
             <small
               style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
             {% else %}

@@ -1,21 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+import datetime
 
 
 # Create your models here.
 class User(AbstractUser):
-    email = models.CharField(unique=True,
+    username = models.CharField(unique=True,
                              max_length=200,
                              null=True,
                              verbose_name='username')
-    username = models.EmailField(unique=True,
+    email = models.EmailField(unique=True,
                                  max_length=200,
                                  verbose_name='email address')
     profile_picture = models.ImageField(default='images/avatar.svg',
                                         upload_to='images/',
                                         null=True,
                                         blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def read_message(self, message) -> None:
         if self.email == message.chat.user:
@@ -25,7 +29,7 @@ class User(AbstractUser):
         message.save()
 
     def __str__(self) -> str:
-        return self.email
+        return self.username
 
 
 class ChatManager(models.Manager):
@@ -33,9 +37,9 @@ class ChatManager(models.Manager):
     def create(self, **kwargs):
         user = kwargs['user']
         user1 = kwargs['user1']
-        test = super().get_queryset().filter(user=user, user1=user1)
-        test1 = super().get_queryset().filter(user=user1, user1=user)
-        if test.exists() or test1.exists():
+        test = Chat.objects.filter(user=user, user1=user1)
+        test1 = Chat.objects.filter(user=user1, user1=user)
+        if test.count() > 0 or test1.count() > 0:
             raise ValidationError('This chat already exists')
         elif not User.objects.filter(
                 email=user).exists() or not User.objects.filter(
@@ -52,14 +56,14 @@ class Chat(models.Model):
 
     def get_other(self, request):
         user_list = [self.user, self.user1]
-        return user_list[user_list.index(request.user.email) - 1]
+        return user_list[user_list.index(request.user.username) - 1]
 
     def user_unread(self):
-        user = User.objects.get(email=self.user1)
+        user = User.objects.get(username=self.user1)
         return self.messages.filter(read=False, user=user).count()
 
     def user1_unread(self):
-        user = User.objects.get(email=self.user)
+        user = User.objects.get(username=self.user1)
         return self.messages.filter(read1=False, user=user).count()
 
     def get_last_message(self):
