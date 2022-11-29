@@ -2,9 +2,6 @@ from django.contrib.auth.forms import UserCreationForm
 from main.models import User
 from django.forms import ModelForm
 from django import forms
-from django.contrib.auth.forms import PasswordResetForm
-from django.utils.translation import gettext_lazy as _
-
 
 
 class UserCreateForm(UserCreationForm):
@@ -29,9 +26,12 @@ class UserForm(ModelForm):
                                  'class': 'form-control'
                              }))
     password = forms.CharField(label='Password',
-                               widget=forms.PasswordInput(
-                                   {'placeholder': 'Password',
-                                   'class':'form-control'}))
+                               widget=forms.PasswordInput({
+                                   'placeholder':
+                                   'Password',
+                                   'class':
+                                   'form-control'
+                               }))
 
     class Meta:
         model = User
@@ -39,16 +39,18 @@ class UserForm(ModelForm):
 
 
 class UserEditForm(ModelForm):
-    username = forms.EmailField(label='Email',
-                                widget=forms.EmailInput(attrs={
-                                    'autofocus': True,
-                                    'class': 'form-control',
-                                    'placeholder': 'Email'
-                                }))
+    username = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(attrs={
+            'autofocus': True,
+            'class': 'form-control',
+            'placeholder': 'Email'
+        }))
     email = forms.CharField(label='Username',
-                            widget=forms.TextInput({'placeholder':
-                                                    'Username', 
-                                                    'class':'form-control'}))
+                            widget=forms.TextInput({
+                                'placeholder': 'Username',
+                                'class': 'form-control'
+                            }))
 
     class Meta:
         model = User

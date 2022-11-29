@@ -1,34 +1,50 @@
-{% extends 'main.html' %}
-{% load static %}
-{% block content %}
+{% extends 'main.html' %} {% load static %} {% block content %} 
 {% load crispy_forms_tags %}
 <link rel="stylesheet" href="{% static 'css/floating-labels.css' %}" />
 
-<div class="container form-container login-inside" style="padding: 2%;margin: auto;">
-  <h1 style="margin-left: 35%;margin-bottom: 5%;">Sign In</h1>
-  {% if messages %}
-  <ul class="messages" style="border: 1px solid black;">
+<div
+  class="container login-inside"
+  style="padding: 5%;border-radius: 15px;"
+>
+ 
+    
+    <div ><h1 style="margin-left: 35%; margin-bottom: 5%">Sign In - <i style="color: blue;">ChatsApp</i></h1></div>
+    
+    {% if messages %}
+    <div >
+  <ul class="messages" style="padding:0 3.5%;" >
     {% for message in messages %}
     <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
       {% endfor %}
   </ul>
+  </div>
   {% endif %}
-  <form action="" method="POST">
-    {% csrf_token %}
-    {% for field in form %}
-        <div class="form-label-group">
-            {{field}}
-            <label>{{field.label}}</label>
-        </div>
-       
-        {% endfor %}
-    <p style="margin-bottom: 1rem;">
-      New to <strong style="color: blue;"><i>ChatsApp?</i></strong><a href="{% url 'users:register' %}">
-        <strong><u>Sign Up</u></strong></a>
-    </p>
-    <input type="submit" value="Login" class="btn btn-success" />
-    <p style="margin-top: 1rem;font-size:medium;"><a style="color: rgb(15, 32, 189);text-decoration: underline;" href="{% url 'users:password-reset' %}"><strong>I have forgotten my password</strong></a></p>
-  </form>
-</div>
 
-{% endblock content %}
+    <form action="" method="POST">
+      {% csrf_token %} {% for field in form %}
+      <div class="form-label-group">
+        {{field}}
+        <label>{{field.label}}</label>
+      </div>
+
+      {% endfor %}
+      <p style="margin-bottom: 1rem">
+        New to <strong style="color: blue"><i>ChatsApp?</i></strong
+        ><a href="{% url 'users:register' %}">
+          <strong><u>Sign Up</u></strong></a
+        >
+      </p>
+      <input type="submit" value="Login" class="btn btn-success" />
+      <p style="margin-top: 1rem; font-size: medium">
+        <a
+          style="color: rgb(15, 32, 189); text-decoration: underline"
+          href="{% url 'users:password-reset' %}"
+          ><strong>I have forgotten my password</strong></a
+        >
+      </p>
+    </form>
+  
+
+  </div>
+
+  {% endblock content %}

@@ -1,27 +1,52 @@
 {% extends 'main.html' %} {% load crispy_forms_tags %} {% block content %}
 
-<div class="img-body-login" style="height: 100%">
-  <div class="container form-container register-inside" style="margin-left: 70%;padding:1rem">
-  <h1 style="margin-left: 35%;">Register</h1>
-    <form action="" method="POST" enctype="multipart/form-data">
-      {% csrf_token %} {{form | crispy}}
-      <div class="image-container">
-        <label for="file_photo"><pre>Choose Profile Picture:  </pre></label>
-        <input
-          type="file"
-          id="file_photo"
-          onchange="preview_image(event)"
-          name="profile_picture"
-          required
-        />
-        <div id="camera_icon" class="camera_icon"></div>
+<div
+  class="container form-container register-inside"
+  style="padding: 1.5rem; margin-top: 3%;margin-bottom: 5%;"
+>
+  <h1 style="text-align: center">Register - <i style="color: blue;">ChatsApp</i></h1>
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {{form | crispy}}
+    <div class="image-container row">
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col-12 col-xl-6">
+          <label for="file_photo">
+            <pre
+              style="
+                font-size: 1.2rem;
+                font-style: italic;
+                margin-bottom: 0;
+                margin-top: 10px;
+              "
+            >
+Choose Profile Picture:   </pre
+            >
+          </label></div>
+          <div class="col-12 col-xl-6">
+          <input
+            class="form-control"
+            
+            type="file"
+            id="file_photo"
+            onchange="preview_image(event)"
+            name="profile_picture"
+            required
+          />
+        </div>
+        </div>
       </div>
-      <p style="margin-bottom: 1rem">
-        Created an account before?<a href="{% url 'users:login' %}"> Sign In</a>
-      </p>
-      <input type="submit" value="Register" class="btn btn-success" />
-    </form>
-  </div>
+      <div
+        id="camera_icon"
+        class="camera_icon col-md-6 col-12"
+        style="background-color: purple"
+      ></div>
+    </div>
+    <p style="margin-bottom: 1rem;margin-top: 2rem;font-weight: 600;font-size: large;color: blue;">
+      Created an account before?<a href="{% url 'users:login' %}"> Sign In</a>
+    </p>
+    <input type="submit" value="Register" class="btn btn-success" />
+  </form>
 </div>
 
 <script>

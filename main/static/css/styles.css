@@ -139,7 +139,7 @@ body {
   border: 2px solid aqua;
   width: fit-content;
   height: fit-content;
-  padding-right: 1%;
+  padding-right: 3%;
   margin-top: 1%;
   border-radius: 5px;
   background-color: aqua;
@@ -238,17 +238,13 @@ body {
 .camera_icon {
   background-size: cover;
   background-position: center;
-  width: 15rem;
-  height: 10rem;
+
+  height: 20rem;
   border: 2px solid aqua;
   border-radius: 5px;
 }
 
-.image-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
+
 .edit-profile-container {
   width: 50%;
   margin-top: 5%;
