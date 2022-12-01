@@ -15,7 +15,7 @@ width:100vw;
 height:100vh;
 background-image: url('../static/images/login.jfif');
 background-size: cover;
-overflow-y: scroll;
+overflow-y: auto;
 ">
 
 <div class="container-lg box" style="margin-top: 5%;margin-bottom:10%">
@@ -118,8 +118,8 @@ overflow-y: scroll;
             {% if chat.get_last_message is not None %}
             {% if chat.get_last_message.user == request.user %}
             {% if chat.get_last_message.user.username == chat.user and chat.get_last_message.read1 %}
-            <small style="font-size: 0.6rem;color: rgb(7, 84, 228)"><strong><em>&#x2713;&#x2713;</em></strong></small>
-            {% elif chat.last_message.user.username == chat.user1 and chat.last_message.read %}
+            <small style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#x2713;&#x2713;</em></strong></small>
+            {% elif chat.get_last_message.user.username == chat.user1 and chat.get_last_message.read %}
             <small
               style="font-size: 0.6rem;color: rgb(0, 119, 255)"><strong><em>&#10003;&#10003;</em></strong></small>
             {% else %}
@@ -132,8 +132,6 @@ overflow-y: scroll;
         </div>
           </a>
           
-
-
           <div class=" col-6 col-md-4" style="background-color:white">
             <div class="row" style="padding: 0;">
              <a href="{% url 'main:chat' chat.id %}" class="col-10" style="display: flex;flex-direction:column;margin: 0;align-items: center;margin-top: 5%;">

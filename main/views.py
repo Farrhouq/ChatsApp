@@ -15,8 +15,9 @@ def chat_list(request):
             if username == request.user.username:
                 messages.error(request,
                                "Can't create a chat with your username")
-            elif not User.objects.filter(username=request.user.username).exists(
-            ) or not User.objects.filter(username=username).exists():
+            elif not User.objects.filter(username=request.user.username
+                                         ).exists() or not User.objects.filter(
+                                             username=username).exists():
                 messages.error(request,
                                'This user is not registered on ChatsApp')
             else:
@@ -40,6 +41,8 @@ def chat_list(request):
     except:
         pic = '../static/images/avatar.svg'
 
+    sorted_chats = []
+    null_chats = []
     unread_chats_count = 0
     for chat in chats:
         chat.other = chat.get_other(request)
@@ -51,16 +54,44 @@ def chat_list(request):
 
         if chat.user_unread_:
             unread_chats_count += 1
-        
-        chat.other_pic = User.objects.get(username=chat.other).profile_picture.url
-        
-        
+
+        chat.other_pic = User.objects.get(
+            username=chat.other).profile_picture.url
+
+
+    sorted_chats = []
+
+    for chat in chats:
+        if chat.messages.all().count() == 0:
+            chats.remove(chat)
+            null_chats.append(chat)
+
+    while len(chats) > 0:
+        for chat in chats:
+            if chat.messages.all().count() != 0:
+                passed = True
+
+                #   check if it is the minimum
+                for comparison in chats:
+                    if chat.get_last_message().created >= comparison.get_last_message().created:
+                        continue
+                    else:
+                        passed = False
+                        break
+
+                if passed:
+                    sorted_chats.append(chat)
+                    chats.remove(chat)
+                    break
+            elif chat.get_last_message() is None:
+                null_chats.append(chat)
 
     if unread_chats_count:
         label = f'Chats ({unread_chats_count})'
     else:
         label = 'Chats'
 
+    chats = sorted_chats + null_chats
     context = {'chats': chats, 'pic': pic, 'label': label}
     return render(request, 'chat_list.html', context)
 
@@ -82,6 +113,7 @@ def chat(request, pk):
     message_list = []
     for message in messages:
         user.read_message(message)
+        message.save()
         message_list.append(message)
 
     for message in message_list:
@@ -92,10 +124,16 @@ def chat(request, pk):
         pass
 
     friend = User.objects.get(username=friend)
+    is_online = friend.is_authenticated
+    if is_online:
+        online_status = 'online'
+    else:
+        online_status = friend.last_login
 
     context = {
         'friend': friend,
         'messages': messages,
+        'online_status': online_status
     }
     return render(request, 'chat.html', context)
 

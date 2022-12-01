@@ -22,7 +22,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username']
 
     def read_message(self, message) -> None:
-        if self.email == message.chat.user:
+        if self.username == message.chat.user:
             message.read = True
         else:
             message.read1 = True
@@ -39,11 +39,11 @@ class ChatManager(models.Manager):
         user1 = kwargs['user1']
         test = Chat.objects.filter(user=user, user1=user1)
         test1 = Chat.objects.filter(user=user1, user1=user)
-        if test.count() > 0 or test1.count() > 0:
+        if test.exists()  or test1.exists() > 0:
             raise ValidationError('This chat already exists')
         elif not User.objects.filter(
-                email=user).exists() or not User.objects.filter(
-                    email=user1).exists():
+                username=user).exists() or not User.objects.filter(
+                    username=user1).exists():
             raise ValidationError(
                 'One or both users are not registered on ChatsApp')
         else:
@@ -63,7 +63,7 @@ class Chat(models.Model):
         return self.messages.filter(read=False, user=user).count()
 
     def user1_unread(self):
-        user = User.objects.get(username=self.user1)
+        user = User.objects.get(username=self.user)
         return self.messages.filter(read1=False, user=user).count()
 
     def get_last_message(self):

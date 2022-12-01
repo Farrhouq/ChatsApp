@@ -1,54 +1,70 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} {% load static %} {% block content %}
+ {% load crispy_forms_tags %}
+<link rel="stylesheet" href="{% static 'css/floating-labels.css' %}" />
 
-{% block content %}
-{% load crispy_forms_tags %}
+<div
+  class="container edit-profile-container"
+  style="padding: 1.5rem; margin-top: 3%; margin-bottom: 5%; color: white"
+>
+  <h1 style="text-align: center">
+    Edit Profile - <i style="color: blue">ChatsApp</i>
+  </h1>
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {% for field in form %}
+    <div class="form-label-group">
+      {{field}}
+      <label>{{field.label}}</label>
+    </div>
 
-<div class="container edit-profile-container">
-
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
-    </ul>
-    {% endif %}
-    <form action="" method="POST" style="color: white;" enctype='multipart/form-data'>
-        {% csrf_token %}
-
-        {% for field in form %}
-        <div class="form-label-group">
-            {{field}}
-            <label>{{field.label}}</label>
+    {% endfor %}
+    <div class="image-container row">
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col-12 col-xl-6">
+            <label for="file_photo">
+              <pre class="🐇">Choose Profile Picture:   </pre>
+            </label>
+          </div>
+          <div class="col-12 col-xl-6">
+            <input
+              class="form-control"
+              type="file"
+              id="file_photo"
+              onchange="preview_image(event)"
+              name="profile_picture"
+              required
+            />
+          </div>
         </div>
-       
-        {% endfor %}
-        
-        <div class="image-container">
-            <label for="file_photo"><pre style="color: white;">Change Profile Picture:    </pre></label>
-            <input type="file" id="file_photo" onchange="preview_image(event)" name="profile_picture" />
-            <div id="camera_icon" class="camera_icon"></div>
-        </div>
-        <input type="submit" class="btn btn-success" value="Update" name="" id="">
-        <a class="btn btn-danger" style="margin-left: 5%;" href="{% url 'users:user_profile' %}">Back</a>
-
-    </form>
+      </div>
+      <div
+        id="camera_icon"
+        class="camera_icon col-md-6 col-12"
+        style="background-color: purple"
+      ></div>
+    </div>
+    <input type="submit" class="btn btn-success" value="Update" name="" id="" />
+    <a
+      class="btn btn-danger"
+      style="margin-left: 5%"
+      href="{% url 'users:user_profile' %}"
+      >Back</a
+    >
+  </form>
 </div>
 
 <script>
-    camera_icon = document.getElementById('camera_icon')
-    document.onload(
-        camera_icon.style.display = 'none'
-    )
-    function preview_image(event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var output = document.getElementById('camera_icon');
-            output.style.display = 'block'
-            output.style.backgroundImage = "url('" + reader.result + "')";
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
+  camera_icon = document.getElementById("camera_icon");
+  document.onload((camera_icon.style.display = "none"));
+  function preview_image(event) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var output = document.getElementById("camera_icon");
+      output.style.display = "block";
+      output.style.backgroundImage = "url('" + reader.result + "')";
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
 </script>
-
 
 {% endblock %}

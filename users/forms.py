@@ -39,14 +39,14 @@ class UserForm(ModelForm):
 
 
 class UserEditForm(ModelForm):
-    username = forms.EmailField(
+    email = forms.EmailField(
         label='Email',
         widget=forms.EmailInput(attrs={
             'autofocus': True,
             'class': 'form-control',
             'placeholder': 'Email'
         }))
-    email = forms.CharField(label='Username',
+    username = forms.CharField(label='Username',
                             widget=forms.TextInput({
                                 'placeholder': 'Username',
                                 'class': 'form-control'
