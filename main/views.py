@@ -36,10 +36,6 @@ def chat_list(request):
         if request.user.username in [chat.user, chat.user1]
     ]
 
-    try:
-        pic = request.user.profile_picture.url
-    except:
-        pic = '../static/images/avatar.svg'
 
     sorted_chats = []
     null_chats = []
@@ -92,7 +88,7 @@ def chat_list(request):
         label = 'Chats'
 
     chats = sorted_chats + null_chats
-    context = {'chats': chats, 'pic': pic, 'label': label}
+    context = {'chats': chats, 'label': label}
     return render(request, 'chat_list.html', context)
 
 
