@@ -17,6 +17,8 @@ class User(AbstractUser):
                                         upload_to='images/',
                                         null=True,
                                         blank=True)
+    is_online = models.BooleanField(default=False)
+    last_seen = models.DateTimeField(null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -88,6 +90,7 @@ class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     read = models.BooleanField(null=True, default=False)
     read1 = models.BooleanField(null=True, default=False)
+    is_deleted = models.BooleanField(default=False)
 
     message_margin = '20px'
 

@@ -14,6 +14,8 @@ from .forms import *
 from .models import *
 from main.models import Chat, User
 
+import datetime
+
 # User = settings.AUTH_USER_MODEL
 
 
@@ -46,6 +48,9 @@ def loginUser(request):
 
 
 def logoutUser(request):
+    request.user.is_online = False
+    request.user.last_seen = datetime.datetime.now()
+    request.user.save()
     logout(request)
     return redirect('users:login')
 

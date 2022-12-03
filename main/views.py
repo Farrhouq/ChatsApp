@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
-from django.conf import settings
 from .models import *
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
 def chat_list(request):
     if not request.user.is_authenticated:
         return redirect('users:login')
+
+    user = request.user
+    user.is_online = True
+    user.save()
 
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -29,14 +33,11 @@ def chat_list(request):
                         f'The chat "{username}" was added successfully!')
                 except ValidationError:
                     messages.error(request, 'This chat already exists')
-
     all_chats = Chat.objects.all()
     chats = [
         chat for chat in all_chats
         if request.user.username in [chat.user, chat.user1]
     ]
-
-
     sorted_chats = []
     null_chats = []
     unread_chats_count = 0
@@ -47,46 +48,37 @@ def chat_list(request):
         else:
             chat.user_unread_ = chat.user_unread()
         chat.save()
-
         if chat.user_unread_:
             unread_chats_count += 1
-
         chat.other_pic = User.objects.get(
             username=chat.other).profile_picture.url
-
-
     sorted_chats = []
-
     for chat in chats:
         if chat.messages.all().count() == 0:
             chats.remove(chat)
             null_chats.append(chat)
-
     while len(chats) > 0:
         for chat in chats:
             if chat.messages.all().count() != 0:
                 passed = True
-
-                #   check if it is the minimum
+                #   check if it is the most recent
                 for comparison in chats:
-                    if chat.get_last_message().created >= comparison.get_last_message().created:
+                    if chat.get_last_message(
+                    ).created >= comparison.get_last_message().created:
                         continue
                     else:
                         passed = False
                         break
-
                 if passed:
                     sorted_chats.append(chat)
                     chats.remove(chat)
                     break
             elif chat.get_last_message() is None:
                 null_chats.append(chat)
-
     if unread_chats_count:
         label = f'Chats ({unread_chats_count})'
     else:
         label = 'Chats'
-
     chats = sorted_chats + null_chats
     context = {'chats': chats, 'label': label}
     return render(request, 'chat_list.html', context)
@@ -120,11 +112,10 @@ def chat(request, pk):
         pass
 
     friend = User.objects.get(username=friend)
-    is_online = friend.is_authenticated
-    if is_online:
+    if friend.is_online:
         online_status = 'online'
     else:
-        online_status = friend.last_login
+        online_status = f'last seen on {friend.last_seen}'
 
     context = {
         'friend': friend,
@@ -151,3 +142,20 @@ def delete_chat(request, pk):
                          f'The chat "{chat_name}" was deleted successfully!')
         return redirect('main:chat_list')
     return render(request, 'delete.html', {'message': message})
+
+
+def delete_message(request, pk):
+    message = Message.objects.get(pk=pk)
+    prim_key = message.chat.id
+    if request.user != message.user:
+        return redirect('main:chat', prim_key)
+    message.body = 'This message was deleted'
+    message.is_deleted = True
+    message.save()
+    # return HttpResponseRedirect(request.META.get('HTTP_REFERER')) -> To basically return
+    # to the same page without explicitly spelling out what that page is.
+    # Explicitly deleting from the address bar will raise a 'Page not found (404)' error.
+    return redirect('main:chat', prim_key)
+    # => In the case of an explicit address-bar-deletion,
+    # the user will be redirected to the chat page to see the effect of that deletion (Intentional).
+    # And also to avoid 404 errors.

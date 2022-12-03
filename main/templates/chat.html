@@ -76,30 +76,56 @@
   </div>
 
   <div class="messages-container">
-    <!-- MY MESSAGE -->
     {% for message in messages %} {% if message.user == request.user %}
-    <div class="row">
+    <!-- MY MESSAGE -->
+    <div class="row" style="flex-direction: row-reverse;">
       <div class="style" style="display: none">{{message.message_margin}}</div>
-      <div class="mine col-sm-3 col-6 offset-sm-9 offset-6">
-        {{message.body}}
-        <small class="rawtimes" style="font-size: xx-small; color: blueviolet"
-          ><p>{{message.created}}</p></small
-        >
-        <small
-          class="timesinces"
-          style="font-size: xx-small; color: blueviolet; display: none"
-          >{{message.created|timesince}} ago</small
-        >
+      <div class="mine " style="max-width: 50%;width: fit-content;">
+        <div style="display: flex; flex-direction: row">
+          <div style="width: 100%">
+            <div class="message-body">{{message.body}}</div>
+            {% if not message.is_deleted %}
+            <small
+              class="rawtimes"
+              style="font-size: xx-small; color: blueviolet"
+              ><p>{{message.created}}</p></small
+            >
+            <small
+              class="timesinces"
+              style="font-size: xx-small; color: blueviolet; display: none"
+              >{{message.created|timesince}} ago</small
+            >
+            
+          </div>
+
+          <div class="dropdown dropup" style="width: 3%">
+            <div
+              class=""
+              style="width: fit-content"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <strong>&#8942;</strong>
+            </div>
+            <ul class="dropdown-menu" style="padding: 0;">
+              <li><a class="btn btn-danger" style="width: 100%;height:100%" href="{% url 'main:delete_message' message.id %}">Delete</a></li>
+            </ul>
+          </div>
+          {% endif %}
+        </div>
       </div>
     </div>
+
     <!-- MY MESSAGE ENDS -->
     {% else %}
 
     <!-- OTHER MESSAGE -->
     <div class="row">
       <div class="style" style="display: none">{{message.message_margin}}</div>
-      <div class="other mine col-sm-3 col-6">
-        {{message.body}}
+      <div class="other mine " style="max-width: 50%;width: fit-content;">
+        <div class="message-body">{{message.body}}</div>
+        {% if not message.is_deleted %}
         <small class="rawtimes" style="font-size: xx-small; color: blueviolet"
           ><p>{{message.created}}</p></small
         >
@@ -108,6 +134,7 @@
           style="font-size: xx-small; color: blueviolet; display: none"
           >{{message.created|timesince}} ago</small
         >
+        {% endif %}
       </div>
     </div>
     <!-- OTHER MESSAGE ENDS -->
@@ -144,6 +171,7 @@
 </div>
 
 <script>
+  var message_body = document.querySelectorAll('.message-body');
   var msg_container = document.querySelector(".messages-container");
   msg_container.scrollTo(0, msg_container.scrollHeight);
 
@@ -174,5 +202,16 @@
       }
     }
   });
+
+  for(element of message_body){
+    console.log(element.innerText);
+    if(element.innerText === 'This message was deleted')
+    {
+    element.style.fontStyle = 'italic';
+    element.style.fontSize = '0.7rem';
+    element.style.textAlign = 'center'
+  }
+  }
+  console.log(message_body);
 </script>
 {% endblock %}
